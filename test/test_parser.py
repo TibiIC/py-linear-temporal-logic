@@ -1,6 +1,6 @@
 import unittest
 from ltl.formula import LTLFormula
-from ltl.parser import LTLStringParser
+from ltl.string_parser import LTLStringParser
 from ltl.formula import (
     AtomicProposition, Not, And, Or, Until, Next, Globally, Eventually
 )
