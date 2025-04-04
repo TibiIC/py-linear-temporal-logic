@@ -1,7 +1,8 @@
 from pyparsing import Word, alphas, opAssoc, infixNotation
 
-from ltl.formula import AtomicProposition, Not, And, Implies, Or, Until, Next, Globally, Eventually
-from ltl.parser import ILTLParser
+from py_ltl.formula import AtomicProposition, Not, And, Implies, Or, Until, Next, Globally, Eventually, Prev, Top, \
+    Bottom
+from py_ltl.parser import ILTLParser
 
 
 class LTLStringParser(ILTLParser):
@@ -13,11 +14,15 @@ class LTLStringParser(ILTLParser):
 
         # Define operators
         self.operators = [
+            # (op, precedence, associativity, function)
+            ("⊤", 0, opAssoc.LEFT, self._parse_top),  # True
+            ("⊥", 0, opAssoc.LEFT, self._parse_bottom),  # False
             ("¬", 1, opAssoc.RIGHT, self._parse_not),
             ("∧", 2, opAssoc.LEFT, self._parse_and),
             ("∨", 2, opAssoc.LEFT, self._parse_or),
             ("→", 2, opAssoc.RIGHT, self._parse_implies),  # Not implemented yet
             ("◯", 1, opAssoc.RIGHT, self._parse_next),
+            ("P", 2, opAssoc.LEFT, self._parse_prev),
             ("□", 1, opAssoc.RIGHT, self._parse_globally),
             ("◇", 1, opAssoc.RIGHT, self._parse_eventually),
             ("U", 2, opAssoc.LEFT, self._parse_until),
@@ -28,6 +33,12 @@ class LTLStringParser(ILTLParser):
             self.operand,
             [(op, num, assoc, fn) for op, num, assoc, fn in self.operators]
         )
+
+    def _parse_top(self, tokens):
+        return Top()
+
+    def _parse_bottom(self, tokens):
+        return Bottom()
 
     def _parse_atomic(self, tokens):
         return AtomicProposition(tokens[0])
@@ -49,6 +60,9 @@ class LTLStringParser(ILTLParser):
 
     def _parse_next(self, tokens):
         return Next(tokens[0][1])
+
+    def _parse_prev(self, tokens):
+        return Prev(tokens[0][1])
 
     def _parse_globally(self, tokens):
         return Globally(tokens[0][1])

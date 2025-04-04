@@ -7,5 +7,3 @@ class ILTLParser(ABC):
     @abstractmethod
     def parse(self, input_data):
         pass
-
-

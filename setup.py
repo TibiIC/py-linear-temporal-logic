@@ -1,9 +1,9 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="ltl_parser",  # The name of your package
+    name="py_ltl",  # The name of your package
     version="0.1.0",    # Initial version
-    packages=find_packages(where="ltl"),  # Automatically find packages
+    packages=find_packages(),  # Automatically find packages
     include_package_data=True,
     install_requires=[  # Dependencies, if any
         # List dependencies like this:

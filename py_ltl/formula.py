@@ -17,14 +17,23 @@ class LTLFormula(ABC):
         """Parse an input (string, JSON, etc.) into an LTL formula using a given parser strategy."""
         return parser.parse(input_data)
 
+    def __eq__(self, other):
+        if not isinstance(other, LTLFormula):
+            return False
+        return str(self) == str(other)  # Simple string comparison
+
 
 class AtomicProposition(LTLFormula):
     def __init__(self, name: str, value: Any = None):
-        self.name = name  # The name of the atomic proposition (e.g., "p", "q")
+        self._name: str = name  # The name of the atomic proposition (e.g., "p", "q")
         self.value = value  # This can be either bool, int, or None
 
+    @property
+    def name(self):
+        return self._name
+
     def __str__(self):
-        return f"{self.name}={self.value}" if self.value is not None else self.name
+        return f"{self._name}={self.value}" if self.value is not None else self._name
 
     def evaluate(self):
         """Evaluate the value of the atomic proposition.
@@ -40,12 +49,25 @@ class AtomicProposition(LTLFormula):
             raise ValueError(f"Unsupported value type for atomic proposition: {type(self.value)}")
 
     def __repr__(self):
-        return f"AtomicProposition(name={self.name}, value={self.value})"
+        return f"AtomicProposition(name={self._name}, value={self.value})"
 
     def set_value(self, value):
         """Set a new value for the atomic proposition."""
         self.value = value
 
+class Top(LTLFormula):
+    def __init__(self):
+        pass
+
+    def __str__(self):
+        return "⊤"  # Represents a tautology
+
+class Bottom(LTLFormula):
+    def __init__(self):
+        pass
+
+    def __str__(self):
+        return "⊥"  # Represents a contradiction
 
 # Logical operators
 class Not(LTLFormula):
@@ -91,6 +113,12 @@ class Next(LTLFormula):
     def __str__(self):
         return f"◯({self.formula})"
 
+class Prev(LTLFormula):
+    def __init__(self, formula):
+        self.formula = formula
+
+    def __str__(self):
+        return f"P({self.formula})"
 
 class Globally(LTLFormula):
     def __init__(self, formula):
