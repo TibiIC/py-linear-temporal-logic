@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Any
 
+from py_ltl.formatter import ILTLFormatter
+
 
 # Base class for LTL formulas
 class LTLFormula(ABC):
@@ -8,7 +10,7 @@ class LTLFormula(ABC):
     def __str__(self):
         pass
 
-    def format(self, formatter):
+    def format(self, formatter: ILTLFormatter):
         """Format the formula using a provided formatter strategy."""
         return formatter.format(self)
 
