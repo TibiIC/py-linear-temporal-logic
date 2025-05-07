@@ -5,9 +5,8 @@ setup(
     version="0.1.0",    # Initial version
     packages=find_packages(),  # Automatically find packages
     include_package_data=True,
-    install_requires=[  # Dependencies, if any
-        # List dependencies like this:
-        # "pyparsing>=3.0.0",
+    install_requires=[
+        "pyparsing>=3.0.0",
     ],
     tests_require=["pytest"],  # Add pytest as a test dependency
     test_suite="test",  # This will run tests in the `tests` directory
